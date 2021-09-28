@@ -4,6 +4,9 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "../Header";
 import LoginPage from "../../pages/LoginPage";
 import RegisterPage from "../../pages/RegisterPage";
+import HomePage from "../../pages/HomePage/HomePage";
+import AboutPage from "../../pages/AboutPage";
+import NewPostPage from "../../pages/NewPostPage";
 import { AuthContext } from "../../AuthContexts";
 
 // CSS in JS
@@ -22,13 +25,13 @@ function App() {
           <Header />
           <Switch>
             <Route exact path="/">
-              home
+              <HomePage />
             </Route>
             <Route exact path="/about">
-              about
+              <AboutPage />
             </Route>
             <Route exact path="/new-post">
-              newpost
+              <NewPostPage />
             </Route>
             <Route path="/login">
               <LoginPage />

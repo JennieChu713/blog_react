@@ -80,6 +80,7 @@ export default function LoginPage() {
         if (res.ok !== 1) {
           return setErrorMessage(res.toString());
         }
+        console.log(res.data);
         setUser(res.data);
         history.push("/");
       });
