@@ -6,7 +6,7 @@ import { setAuthToken } from "../../utils";
 
 // navbar
 const HeaderContainer = styled.nav`
-  height: 10%;
+  height: 64px;
   display: flex;
   justify-content: space-between;
   position: fixed;
@@ -15,12 +15,16 @@ const HeaderContainer = styled.nav`
   left: 0;
   align-items: center;
   box-sizing: border-box;
-  background-color: #666;
+  box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.1);
+  background-color: rgba(233, 228, 212, 0.3);
+  border-radius: 5px;
 `;
 
 const Brand = styled.header`
   font-size: 2rem;
   font-weight: 800;
+  margin-left: 1rem;
+  color: #c97586;
 `;
 
 const Nav = styled(Link)`
@@ -32,14 +36,17 @@ const Nav = styled(Link)`
   box-sizing: border-box;
   cursor: pointer;
   text-decoration: none;
-  color: white;
+  color: #513743;
 
-  ${(props) => props.$active && `background: rgba(0,0,0, 0.1);`}
+  ${(props) =>
+    props.$active &&
+    `border-top: 1px solid rgba(162,87,104, 0.1); border-bottom: 1px solid rgba(162,87,104, 0.1); border-radius: 5px; color: #a25768;`}
 `;
 
 const NavbarList = styled.div`
   display: flex;
   align-items: center;
+  height: 2.5rem;
 `;
 
 const LeftWrapper = styled.div`
@@ -52,6 +59,9 @@ const LeftWrapper = styled.div`
 const RightWrapper = styled.div`
   display: flex;
   align-items: center;
+  ${NavbarList} {
+    margin-right: 1rem;
+  }
 `;
 
 export default function Header() {
@@ -75,6 +85,9 @@ export default function Header() {
           <Nav $active={location.pathname === "/"} to="/">
             Home
           </Nav>
+          <Nav $active={location.pathname === "/about"} to="/about">
+            About
+          </Nav>
           {user && (
             <Nav $active={location.pathname === "/new-post"} to="/new-post">
               Post
@@ -84,9 +97,11 @@ export default function Header() {
       </LeftWrapper>
       <RightWrapper>
         <NavbarList>
-          <Nav $active={location.pathname === "/register"} to="/register">
-            Register
-          </Nav>
+          {!user && (
+            <Nav $active={location.pathname === "/register"} to="/register">
+              Register
+            </Nav>
+          )}
           {!user && (
             <Nav $active={location.pathname === "/login"} to="/login">
               Login
