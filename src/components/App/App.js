@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "../Header";
-import LoginPage from "../../pages/LoginPage";
-import RegisterPage from "../../pages/RegisterPage";
-import HomePage from "../../pages/HomePage/HomePage";
-import AboutPage from "../../pages/AboutPage";
-import NewPostPage from "../../pages/NewPostPage";
+import {
+  LoginPage,
+  RegisterPage,
+  HomePage,
+  AboutPage,
+  NewPostPage,
+  PostPage,
+} from "../../pages";
 import { AuthContext } from "../../AuthContexts";
 
 // CSS in JS
@@ -27,16 +30,19 @@ function App() {
             <Route exact path="/">
               <HomePage />
             </Route>
+            <Route exact path="/post/:postId">
+              <PostPage />
+            </Route>
             <Route exact path="/about">
               <AboutPage />
             </Route>
             <Route exact path="/new-post">
               <NewPostPage />
             </Route>
-            <Route path="/login">
+            <Route exact path="/login">
               <LoginPage />
             </Route>
-            <Route path="/register">
+            <Route exact path="/register">
               <RegisterPage />
             </Route>
           </Switch>

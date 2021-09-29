@@ -14,6 +14,12 @@ export const getAllPosts = () => {
     .catch((err) => err.toString());
 };
 
+export const getPost = (id) => {
+  return fetch(`${BASE_URL}/posts?id=${id}`)
+    .then((res) => res.json())
+    .catch((err) => err.toString());
+};
+
 export const login = (username, password) => {
   return fetch(`${BASE_URL}/login`, {
     method: "POST",
@@ -46,10 +52,12 @@ export const register = (username, nickname, password) => {
 };
 
 export const newPost = (title, body, userId) => {
-  return fetch(`${BASE_URL}/newpost`, {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/posts`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       userId,

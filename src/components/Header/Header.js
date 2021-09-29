@@ -40,7 +40,9 @@ const Nav = styled(Link)`
 
   ${(props) =>
     props.$active &&
-    `border-top: 1px solid rgba(162,87,104, 0.1); border-bottom: 1px solid rgba(162,87,104, 0.1); border-radius: 5px; color: #a25768;`}
+    `border-top: 1px solid rgba(162,87,104, 0.1);
+    border-bottom: 1px solid rgba(162,87,104, 0.1);
+    border-radius: 5px; color: #a25768;`}
 `;
 
 const NavbarList = styled.div`
@@ -107,6 +109,7 @@ export default function Header() {
               Login
             </Nav>
           )}
+          {user && `hello, ${user.nickname}`}
           {user && (
             <Nav onClick={handleLogout} to="/">
               Logout

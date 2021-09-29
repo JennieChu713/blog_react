@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { newPost, getMe } from "../../WebAPI";
-import { getAuthToken } from "../../utils";
+import { newPost } from "../../WebAPI";
 import { AuthContext } from "../../AuthContexts";
 
 const FormContainer = styled.form`
@@ -18,6 +17,16 @@ const ErrorMsg = styled.div`
   color: #e83929;
   font-size: 1.4rem;
   margin: 1.4rem auto;
+`;
+const LoginMsg = styled.div`
+  text-align: center;
+  width: 50%;
+  color: #c53d43;
+  font-size: 1.4rem;
+  margin: 2rem auto;
+  border: 1px solid #c53d43;
+  border-radius: 5px;
+  padding: 1.4rem;
 `;
 
 const InputWrapper = styled.div`
@@ -56,37 +65,27 @@ export default function NewPostPage() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const history = useHistory();
+  const { user } = useContext(AuthContext);
 
   // handle functioning
   const handleSubmit = (e) => {
     setErrorMessage(null);
     e.preventDefault();
 
-    // newPost(title, body, userId)
-
-    // register(username, nickname, password).then((data) => {
-    //   if (data.ok === 0) {
-    //     setAuthToken(null);
-    //     return setErrorMessage(data.message);
-    //   }
-
-    //     setAuthToken(data.token);
-
-    //     getMe().then((res) => {
-    //       if (res.ok !== 1) {
-    //         return setErrorMessage(res.toString());
-    //       }
-    //       setUser(res.data);
-    //       history.push("/");
-    //     });
-    //   });
+    newPost(title, body, user.id).then((data) => {
+      if (data.ok === 0) {
+        return setErrorMessage(data.message);
+      }
+      setTitle("");
+      setBody("");
+      history.push("/");
+    });
   };
   const handleOnFocus = () => {
     setErrorMessage("");
   };
-
   //render
-  return (
+  return user ? (
     <FormContainer onSubmit={handleSubmit}>
       <PostTitle>New Post</PostTitle>
       <InputWrapper>
@@ -112,5 +111,7 @@ export default function NewPostPage() {
       <Input type="submit" value="Submit" />
       {errorMessage && <ErrorMsg>{errorMessage}</ErrorMsg>}
     </FormContainer>
+  ) : (
+    <LoginMsg>To Commit Post, Login or Register is Required.</LoginMsg>
   );
 }
