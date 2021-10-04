@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getAllPosts, getPosts } from "../../WebAPI";
+import { RippleLoading, EllipsisLoading } from "../../LoadingImg";
 
 const HomeContainer = styled.section`
   width: 80%;
@@ -46,9 +47,6 @@ const Paginate = styled.div`
   font-size: 1.4rem;
   color: #d3cbc6;
 `;
-const ProcessMsg = styled.div`
-  color: #e4d2d8;
-`;
 
 function Post({ post }) {
   return (
@@ -63,9 +61,13 @@ export default function HomePage() {
   const [posts, setPosts] = useState([]);
   const page = useRef(1);
   const totalPages = useRef(0);
+  const [isPagesLoad, setIsPagesLoad] = useState(false);
 
   useEffect(() => {
     getAllPosts().then((data) => {
+      if (data) {
+        setIsPagesLoad(true);
+      }
       return (totalPages.current = Math.ceil(data.length / 5));
     });
     getPosts(page.current).then((posts) => {
@@ -97,9 +99,11 @@ export default function HomePage() {
 
   return (
     <HomeContainer>
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {posts.length ? (
+        posts.map((post) => <Post key={post.id} post={post} />)
+      ) : (
+        <RippleLoading />
+      )}
       <PaginateWrapper>
         <PaginatesGroup>
           <Paginate onClick={handlePageClick}>First</Paginate>
@@ -107,7 +111,11 @@ export default function HomePage() {
             <Paginate onClick={handlePageClick}>prev</Paginate>
           )}
         </PaginatesGroup>
-        {totalPages.current !== 0 && `${page.current}/${totalPages.current}`}
+        {isPagesLoad && totalPages.current !== 0 ? (
+          `${page.current}/${totalPages.current}`
+        ) : (
+          <EllipsisLoading />
+        )}
         <PaginatesGroup>
           {page.current !== totalPages.current && (
             <Paginate onClick={handlePageClick}>next</Paginate>

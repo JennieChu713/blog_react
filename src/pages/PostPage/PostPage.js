@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams, Link, useHistory } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getPost } from "../../WebAPI";
+import { RippleLoading } from "../../LoadingImg";
 
 //single post
 const BackHome = styled(Link)`
@@ -45,16 +46,25 @@ const PostContent = styled.div`
 export default function PostPage() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
+
   useEffect(() => {
     getPost(postId).then((post) => setPost(post[0]));
   }, [postId]);
   return (
     <PostContainer>
-      <PostTitle>{post && post.title}</PostTitle>
-      <PostDate>{post && new Date(post.createdAt).toLocaleString()}</PostDate>
+      {post ? (
+        <>
+          <PostTitle>{post && post.title}</PostTitle>
+          <PostDate>
+            {post && new Date(post.createdAt).toLocaleString()}
+          </PostDate>
 
-      <PostContent>{post && post.body}</PostContent>
-      <BackHome to="/">Back</BackHome>
+          <PostContent>{post && post.body}</PostContent>
+          <BackHome to="/">Back</BackHome>
+        </>
+      ) : (
+        <RippleLoading />
+      )}
     </PostContainer>
   );
 }
