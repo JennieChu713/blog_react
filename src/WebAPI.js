@@ -3,8 +3,7 @@ import { getAuthToken } from "./utils";
 const BASE_URL = "https://student-json-api.lidemy.me";
 
 export const getPosts = (page) => {
-  //https://student-json-api.lidemy.me/posts?&_page=2&_limit=5&_sort=id&_order=desc
-  return fetch(`${BASE_URL}/posts?_page=${page}&_limit=5`)
+  return fetch(`${BASE_URL}/posts?_page=${page}&_limit=5&_sort=id&_order=desc`)
     .then((res) => res.json())
     .catch((err) => err.toString());
 };
